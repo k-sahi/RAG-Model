@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HX-1212 — Webhook subscription not delivering events</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         max-width: 820px; margin: 24px auto; padding: 0 24px; color: #2a2422; line-height: 1.5; }
+  .ticket-header { border-bottom: 2px solid #3D332E; padding-bottom: 16px; margin-bottom: 24px; }
+  .ticket-id { color: #C97B3F; font-weight: 700; font-size: 14px; letter-spacing: 0.05em; }
+  h1 { font-size: 22px; margin: 6px 0 12px; color: #3D332E; }
+  .meta-row { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: #555; }
+  .meta-row span strong { color: #3D332E; }
+  .priority-badge { display: inline-block; padding: 2px 8px; border-radius: 3px; color: white;
+                     font-weight: 600; font-size: 12px; background: #3D332E; }
+  .conversation { margin-top: 24px; }
+  .message { padding: 14px 18px; margin-bottom: 14px; border-radius: 4px; }
+  .message-header { display: flex; gap: 12px; align-items: center; margin-bottom: 8px;
+                     flex-wrap: wrap; font-size: 13px; }
+  .sender-name { font-weight: 700; color: #3D332E; }
+  .role-badge { background: #3D332E; color: #fff; padding: 2px 8px; font-size: 11px;
+                 border-radius: 3px; letter-spacing: 0.04em; }
+  .timestamp { color: #888; font-size: 12px; margin-left: auto; }
+  .message-body { font-size: 14px; }
+  .message-body code { background: #f0e8df; padding: 1px 5px; border-radius: 2px; font-size: 13px; }
+  .resolution { margin-top: 32px; padding: 18px; background: #3D332E; color: #fff; border-radius: 4px; }
+  .resolution h3 { margin: 0 0 8px; color: #C97B3F; font-size: 14px; letter-spacing: 0.06em; }
+  .resolution p { margin: 0; font-size: 14px; line-height: 1.6; }
+  ul, ol { margin: 8px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+</style>
+</head>
+<body>
+  <div class="ticket-header">
+    <div class="ticket-id">TICKET HX-1212</div>
+    <h1>Webhook subscription not delivering events</h1>
+    <div class="meta-row">
+      <span><strong>Status:</strong> Resolved</span>
+      <span><strong>Category:</strong> API</span>
+      <span><strong>Priority:</strong> <span class="priority-badge">P2</span></span>
+      <span><strong>Customer:</strong> Lila Okafor (Pinetree Studios)</span>
+      <span><strong>Agent:</strong> Sandra Liu</span>
+    </div>
+  </div>
+  <div class="conversation">
+    
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Lila Okafor</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-03-25 16:30 UTC</span>
+          </div>
+          <div class="message-body"><p>I subscribed our endpoint to run.failed events 4 days ago and we haven't received a single delivery, even though I can see failed runs in the dashboard. Endpoint URL is https://api.pinetree.studio/helix-webhook. What's broken?</p></div>
+        </div>
+        <div class="message" style="background: #f6f2ed; border-left: 3px solid #3D332E;">
+          <div class="message-header">
+            <span class="sender-name">Sandra Liu</span>
+            <span class="role-badge">Helix Support</span>
+            <span class="timestamp">2024-03-25 16:51 UTC</span>
+          </div>
+          <div class="message-body"><p>Hi Lila — looking now. I see your subscription. I also see we attempted 47 deliveries to that URL in the last 4 days. Every one returned a 403 Forbidden response from your endpoint, so they're being marked as failed deliveries.</p><p>You can confirm this yourself in <strong>Settings → Webhooks → {your-subscription} → Delivery Logs</strong>. After 3 retries we mark each event permanently failed.</p><p>The 403 suggests your endpoint is rejecting our requests — maybe a signature check failing, or an auth middleware blocking unknown clients. Can you check your access logs for what's returning 403?</p></div>
+        </div>
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Lila Okafor</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-03-25 17:09 UTC</span>
+          </div>
+          <div class="message-body"><p>You're right, our middleware is rejecting unsigned requests. We have signature verification on, expecting an HMAC in a custom header. What's the header name and signing algorithm Helix uses?</p></div>
+        </div>
+        <div class="message" style="background: #f6f2ed; border-left: 3px solid #3D332E;">
+          <div class="message-header">
+            <span class="sender-name">Sandra Liu</span>
+            <span class="role-badge">Helix Support</span>
+            <span class="timestamp">2024-03-25 17:14 UTC</span>
+          </div>
+          <div class="message-body"><p>The header is <code>X-Helix-Signature</code> and the signing algorithm is <strong>HMAC-SHA256</strong> over the raw request body, using the secret from your subscription config. Make sure you're verifying against the raw bytes, not the parsed JSON — re-serialization will produce different bytes and break signature verification.</p><p>Also: we don't backfill failed deliveries automatically. Once your endpoint is fixed, only new events going forward will arrive. If you need the events from the last 4 days, let me know and I can help you replay them.</p></div>
+        </div>
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Lila Okafor</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-03-25 18:02 UTC</span>
+          </div>
+          <div class="message-body"><p>Got signature verification working. Test event came through. Please replay the missed events from the last 4 days, that would help.</p></div>
+        </div>
+        <div class="message" style="background: #f6f2ed; border-left: 3px solid #3D332E;">
+          <div class="message-header">
+            <span class="sender-name">Sandra Liu</span>
+            <span class="role-badge">Helix Support</span>
+            <span class="timestamp">2024-03-25 18:21 UTC</span>
+          </div>
+          <div class="message-body"><p>Replay queued — 47 events from the last 4 days are being redelivered. They'll trickle in over the next 30 minutes to avoid spiking your endpoint. Closing this out.</p></div>
+        </div>
+  </div>
+  <div class="resolution">
+    <h3>RESOLUTION</h3>
+    <p>Customer&#x27;s webhook endpoint was returning 403 because their middleware required a signed request and signature verification wasn&#x27;t yet implemented on their side. Helix uses X-Helix-Signature header with HMAC-SHA256 over the raw body. Customer implemented verification correctly, agent replayed 4 days of missed deliveries.</p>
+  </div>
+</body>
+</html>

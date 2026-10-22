@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HX-1455 — Editor can&#x27;t see Billing settings — bug?</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         max-width: 820px; margin: 24px auto; padding: 0 24px; color: #2a2422; line-height: 1.5; }
+  .ticket-header { border-bottom: 2px solid #3D332E; padding-bottom: 16px; margin-bottom: 24px; }
+  .ticket-id { color: #C97B3F; font-weight: 700; font-size: 14px; letter-spacing: 0.05em; }
+  h1 { font-size: 22px; margin: 6px 0 12px; color: #3D332E; }
+  .meta-row { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: #555; }
+  .meta-row span strong { color: #3D332E; }
+  .priority-badge { display: inline-block; padding: 2px 8px; border-radius: 3px; color: white;
+                     font-weight: 600; font-size: 12px; background: #777777; }
+  .conversation { margin-top: 24px; }
+  .message { padding: 14px 18px; margin-bottom: 14px; border-radius: 4px; }
+  .message-header { display: flex; gap: 12px; align-items: center; margin-bottom: 8px;
+                     flex-wrap: wrap; font-size: 13px; }
+  .sender-name { font-weight: 700; color: #3D332E; }
+  .role-badge { background: #3D332E; color: #fff; padding: 2px 8px; font-size: 11px;
+                 border-radius: 3px; letter-spacing: 0.04em; }
+  .timestamp { color: #888; font-size: 12px; margin-left: auto; }
+  .message-body { font-size: 14px; }
+  .message-body code { background: #f0e8df; padding: 1px 5px; border-radius: 2px; font-size: 13px; }
+  .resolution { margin-top: 32px; padding: 18px; background: #3D332E; color: #fff; border-radius: 4px; }
+  .resolution h3 { margin: 0 0 8px; color: #C97B3F; font-size: 14px; letter-spacing: 0.06em; }
+  .resolution p { margin: 0; font-size: 14px; line-height: 1.6; }
+  ul, ol { margin: 8px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+</style>
+</head>
+<body>
+  <div class="ticket-header">
+    <div class="ticket-id">TICKET HX-1455</div>
+    <h1>Editor can&#x27;t see Billing settings — bug?</h1>
+    <div class="meta-row">
+      <span><strong>Status:</strong> Resolved</span>
+      <span><strong>Category:</strong> Permissions</span>
+      <span><strong>Priority:</strong> <span class="priority-badge">P3</span></span>
+      <span><strong>Customer:</strong> Carlos Mendoza (Cedar Valley Co-op)</span>
+      <span><strong>Agent:</strong> Marcus Webb</span>
+    </div>
+  </div>
+  <div class="conversation">
+    
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Carlos Mendoza</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-04-19 14:08 UTC</span>
+          </div>
+          <div class="message-body"><p>I'm an Editor in our workspace and I need to update our payment method. I don't see Billing under Settings. The owner says he can see it. Is something broken?</p></div>
+        </div>
+        <div class="message" style="background: #f6f2ed; border-left: 3px solid #3D332E;">
+          <div class="message-header">
+            <span class="sender-name">Marcus Webb</span>
+            <span class="role-badge">Helix Support</span>
+            <span class="timestamp">2024-04-19 14:21 UTC</span>
+          </div>
+          <div class="message-body"><p>Hi Carlos — not a bug. Billing is restricted to the workspace Owner role only. Even Admins don't see it. The four roles are Owner, Admin, Editor, Viewer, and only Owner has billing access.</p><p>If you need to change the payment method, you have two options: (1) ask the Owner to make the change, or (2) ask the Owner to transfer ownership to you (only one Owner per workspace, so they'd lose Owner status). Most teams go with option 1 unless ownership transfer is a deliberate decision.</p></div>
+        </div>
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Carlos Mendoza</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-04-19 14:28 UTC</span>
+          </div>
+          <div class="message-body"><p>Got it. Will ask our Owner to update it. Question — is this configurable? Like can I be granted billing access without becoming Owner?</p></div>
+        </div>
+        <div class="message" style="background: #f6f2ed; border-left: 3px solid #3D332E;">
+          <div class="message-header">
+            <span class="sender-name">Marcus Webb</span>
+            <span class="role-badge">Helix Support</span>
+            <span class="timestamp">2024-04-19 14:36 UTC</span>
+          </div>
+          <div class="message-body"><p>Not on Pro. On Enterprise, custom roles are available, and you could define a role with billing-but-not-owner permissions. If that's something you'd want to explore, I can connect you with your account team.</p></div>
+        </div>
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Carlos Mendoza</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-04-19 14:42 UTC</span>
+          </div>
+          <div class="message-body"><p>Not worth upgrading just for that. Owner can handle it. Thanks for the clear answer.</p></div>
+        </div>
+  </div>
+  <div class="resolution">
+    <h3>RESOLUTION</h3>
+    <p>Customer was confused by missing Billing menu. Confirmed not a bug — billing is restricted to the Owner role only on Pro plan; even Admins can&#x27;t see it. Custom roles with split permissions are an Enterprise-only feature. Customer asked Owner to make the change.</p>
+  </div>
+</body>
+</html>

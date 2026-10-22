@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HX-1267 — Salesforce integration keeps disconnecting</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         max-width: 820px; margin: 24px auto; padding: 0 24px; color: #2a2422; line-height: 1.5; }
+  .ticket-header { border-bottom: 2px solid #3D332E; padding-bottom: 16px; margin-bottom: 24px; }
+  .ticket-id { color: #C97B3F; font-weight: 700; font-size: 14px; letter-spacing: 0.05em; }
+  h1 { font-size: 22px; margin: 6px 0 12px; color: #3D332E; }
+  .meta-row { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: #555; }
+  .meta-row span strong { color: #3D332E; }
+  .priority-badge { display: inline-block; padding: 2px 8px; border-radius: 3px; color: white;
+                     font-weight: 600; font-size: 12px; background: #3D332E; }
+  .conversation { margin-top: 24px; }
+  .message { padding: 14px 18px; margin-bottom: 14px; border-radius: 4px; }
+  .message-header { display: flex; gap: 12px; align-items: center; margin-bottom: 8px;
+                     flex-wrap: wrap; font-size: 13px; }
+  .sender-name { font-weight: 700; color: #3D332E; }
+  .role-badge { background: #3D332E; color: #fff; padding: 2px 8px; font-size: 11px;
+                 border-radius: 3px; letter-spacing: 0.04em; }
+  .timestamp { color: #888; font-size: 12px; margin-left: auto; }
+  .message-body { font-size: 14px; }
+  .message-body code { background: #f0e8df; padding: 1px 5px; border-radius: 2px; font-size: 13px; }
+  .resolution { margin-top: 32px; padding: 18px; background: #3D332E; color: #fff; border-radius: 4px; }
+  .resolution h3 { margin: 0 0 8px; color: #C97B3F; font-size: 14px; letter-spacing: 0.06em; }
+  .resolution p { margin: 0; font-size: 14px; line-height: 1.6; }
+  ul, ol { margin: 8px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+</style>
+</head>
+<body>
+  <div class="ticket-header">
+    <div class="ticket-id">TICKET HX-1267</div>
+    <h1>Salesforce integration keeps disconnecting</h1>
+    <div class="meta-row">
+      <span><strong>Status:</strong> Resolved</span>
+      <span><strong>Category:</strong> Integrations</span>
+      <span><strong>Priority:</strong> <span class="priority-badge">P2</span></span>
+      <span><strong>Customer:</strong> Aisha Bhatt (Coastline Realty)</span>
+      <span><strong>Agent:</strong> Sandra Liu</span>
+    </div>
+  </div>
+  <div class="conversation">
+    
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Aisha Bhatt</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-03-29 10:15 UTC</span>
+          </div>
+          <div class="message-body"><p>Our Salesforce connection has 'expired' three times this month. Every time I reconnect and it works for a week or two then breaks again. This is killing our pipeline.</p></div>
+        </div>
+        <div class="message" style="background: #f6f2ed; border-left: 3px solid #3D332E;">
+          <div class="message-header">
+            <span class="sender-name">Sandra Liu</span>
+            <span class="role-badge">Helix Support</span>
+            <span class="timestamp">2024-03-29 10:34 UTC</span>
+          </div>
+          <div class="message-body"><p>Hi Aisha — that's frustrating. Repeated OAuth disconnects almost always trace to one of these: (1) the Salesforce user who authorized has expiring credentials in SF (password expiry, MFA challenge changes), (2) Salesforce admin policy is revoking long-lived OAuth grants, or (3) the user account is being deactivated and reactivated.</p><p>Who is the SF user that authorized the connection — is it a personal account or a service account?</p></div>
+        </div>
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Aisha Bhatt</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-03-29 10:42 UTC</span>
+          </div>
+          <div class="message-body"><p>It's connected as me (the SF admin). Personal account.</p></div>
+        </div>
+        <div class="message" style="background: #f6f2ed; border-left: 3px solid #3D332E;">
+          <div class="message-header">
+            <span class="sender-name">Sandra Liu</span>
+            <span class="role-badge">Helix Support</span>
+            <span class="timestamp">2024-03-29 10:51 UTC</span>
+          </div>
+          <div class="message-body"><p>Found it. Your Salesforce org has a 'Refresh token policy' set to <em>expire on first use</em>. That means every time we use the refresh token to get a new access token, the refresh token itself is invalidated. This basically makes the connection one-shot — works until the access token expires, then dead.</p><p>Two paths:</p><ol><li>Change the refresh token policy in your SF Connected App settings to <em>refresh until revoked</em>. This is the standard setting for integrations.</li><li>Switch to a service account specifically for Helix. Best practice for integrations anyway — survives admin role changes, separates audit trails.</li></ol><p>I'd recommend doing both, but option 1 alone fixes the immediate problem.</p></div>
+        </div>
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Aisha Bhatt</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-03-29 11:10 UTC</span>
+          </div>
+          <div class="message-body"><p>Updated the refresh token policy. Reconnecting now.</p></div>
+        </div>
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Aisha Bhatt</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-04-12 09:22 UTC</span>
+          </div>
+          <div class="message-body"><p>Two weeks in, no disconnects. Looks like that did it. Will move to a service account when I have time. Thanks.</p></div>
+        </div>
+  </div>
+  <div class="resolution">
+    <h3>RESOLUTION</h3>
+    <p>Customer&#x27;s Salesforce connected app refresh token policy was set to &#x27;expire on first use,&#x27; which invalidated the refresh token every time Helix rotated access tokens. Changed policy to &#x27;refresh until revoked.&#x27; Recommended switching to a service account long-term. Stable for 2+ weeks after fix.</p>
+  </div>
+</body>
+</html>

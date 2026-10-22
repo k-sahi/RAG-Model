@@ -1,0 +1,20 @@
+{
+  "description": "Questions the knowledge base cannot answer. Retrieval should abstain on all of them.",
+  "queries": [
+    "What is the capital of France?",
+    "How do I bake sourdough bread?",
+    "Who won the 2022 football World Cup?",
+    "Explain quantum entanglement simply",
+    "What's a good recipe for lasagna?",
+    "How tall is Mount Everest?",
+    "Write me a poem about autumn",
+    "What is the boiling point of water in Kelvin?",
+    "How do I change the oil in a Honda Civic?",
+    "Who painted the Mona Lisa?",
+    "Recommend a good sci-fi novel",
+    "What are the symptoms of the flu?",
+    "How many moons does Jupiter have?",
+    "Translate 'good morning' into Japanese",
+    "What's the best way to learn the guitar?"
+  ]
+}

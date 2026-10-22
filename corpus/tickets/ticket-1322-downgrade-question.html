@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HX-1322 — Question about downgrading from Pro to Starter</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         max-width: 820px; margin: 24px auto; padding: 0 24px; color: #2a2422; line-height: 1.5; }
+  .ticket-header { border-bottom: 2px solid #3D332E; padding-bottom: 16px; margin-bottom: 24px; }
+  .ticket-id { color: #C97B3F; font-weight: 700; font-size: 14px; letter-spacing: 0.05em; }
+  h1 { font-size: 22px; margin: 6px 0 12px; color: #3D332E; }
+  .meta-row { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: #555; }
+  .meta-row span strong { color: #3D332E; }
+  .priority-badge { display: inline-block; padding: 2px 8px; border-radius: 3px; color: white;
+                     font-weight: 600; font-size: 12px; background: #777777; }
+  .conversation { margin-top: 24px; }
+  .message { padding: 14px 18px; margin-bottom: 14px; border-radius: 4px; }
+  .message-header { display: flex; gap: 12px; align-items: center; margin-bottom: 8px;
+                     flex-wrap: wrap; font-size: 13px; }
+  .sender-name { font-weight: 700; color: #3D332E; }
+  .role-badge { background: #3D332E; color: #fff; padding: 2px 8px; font-size: 11px;
+                 border-radius: 3px; letter-spacing: 0.04em; }
+  .timestamp { color: #888; font-size: 12px; margin-left: auto; }
+  .message-body { font-size: 14px; }
+  .message-body code { background: #f0e8df; padding: 1px 5px; border-radius: 2px; font-size: 13px; }
+  .resolution { margin-top: 32px; padding: 18px; background: #3D332E; color: #fff; border-radius: 4px; }
+  .resolution h3 { margin: 0 0 8px; color: #C97B3F; font-size: 14px; letter-spacing: 0.06em; }
+  .resolution p { margin: 0; font-size: 14px; line-height: 1.6; }
+  ul, ol { margin: 8px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+</style>
+</head>
+<body>
+  <div class="ticket-header">
+    <div class="ticket-id">TICKET HX-1322</div>
+    <h1>Question about downgrading from Pro to Starter</h1>
+    <div class="meta-row">
+      <span><strong>Status:</strong> Resolved</span>
+      <span><strong>Category:</strong> Billing</span>
+      <span><strong>Priority:</strong> <span class="priority-badge">P3</span></span>
+      <span><strong>Customer:</strong> Vince Marino (Marino Consulting)</span>
+      <span><strong>Agent:</strong> Sandra Liu</span>
+    </div>
+  </div>
+  <div class="conversation">
+    
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Vince Marino</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-04-05 09:11 UTC</span>
+          </div>
+          <div class="message-body"><p>I'm a solo consultant and only use Helix for a few personal automations. I'm on Pro but barely using it. If I downgrade to Starter, what happens to my existing workflows?</p></div>
+        </div>
+        <div class="message" style="background: #f6f2ed; border-left: 3px solid #3D332E;">
+          <div class="message-header">
+            <span class="sender-name">Sandra Liu</span>
+            <span class="role-badge">Helix Support</span>
+            <span class="timestamp">2024-04-05 09:28 UTC</span>
+          </div>
+          <div class="message-body"><p>Hi Vince — happy to walk through it. A downgrade from Pro to Starter takes effect at the end of your current billing period (so you keep Pro features until then). When the downgrade activates:</p><ul><li>Your workflow definitions are preserved — nothing gets deleted.</li><li>Plan limits change: max 100 runs/month (down from 10,000), 1 user seat (down from 10), and basic integrations only.</li><li>Workflows that depend on Pro-only integrations (Salesforce, HubSpot, Stripe, etc.) will start failing because the connections will become unavailable.</li><li>API access goes away. If you have anything calling the Helix API, that will stop working.</li></ul><p>If you want, I can pull a list of which of your workflows depend on Pro-only features so you know what would break. That would help you decide.</p></div>
+        </div>
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Vince Marino</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-04-05 09:41 UTC</span>
+          </div>
+          <div class="message-body"><p>Yes please, that would be useful.</p></div>
+        </div>
+        <div class="message" style="background: #f6f2ed; border-left: 3px solid #3D332E;">
+          <div class="message-header">
+            <span class="sender-name">Sandra Liu</span>
+            <span class="role-badge">Helix Support</span>
+            <span class="timestamp">2024-04-05 10:02 UTC</span>
+          </div>
+          <div class="message-body"><p>You have 8 active workflows. Of those:</p><ul><li>5 use only Slack, Email, Webhooks, or Google Sheets — these would continue working on Starter.</li><li>2 use HubSpot integration — these would fail on Starter.</li><li>1 uses the Helix API — this would fail on Starter.</li></ul><p>Also worth noting: your last 3 months of usage have been 22, 31, and 18 runs/month. Well within the {HELIX['plan_starter_runs']}-run Starter limit.</p><p>So — you'd lose 3 of 8 workflows on Starter unless you migrate them. Is the HubSpot work essential?</p></div>
+        </div>
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Vince Marino</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-04-05 10:15 UTC</span>
+          </div>
+          <div class="message-body"><p>The HubSpot ones are nice-to-haves I built and never really used. The API one is more important but I could probably rebuild it as a webhook trigger. Let's schedule the downgrade.</p></div>
+        </div>
+        <div class="message" style="background: #f6f2ed; border-left: 3px solid #3D332E;">
+          <div class="message-header">
+            <span class="sender-name">Sandra Liu</span>
+            <span class="role-badge">Helix Support</span>
+            <span class="timestamp">2024-04-05 10:21 UTC</span>
+          </div>
+          <div class="message-body"><p>Downgrade scheduled — effective May 5 (end of current period). I disabled the 3 Pro-dependent workflows now so they don't surprise-fail on the changeover. They're saved as drafts. You can reactivate them if you ever go back to Pro.</p></div>
+        </div>
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Vince Marino</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-04-05 10:25 UTC</span>
+          </div>
+          <div class="message-body"><p>Great, thanks for thinking ahead.</p></div>
+        </div>
+  </div>
+  <div class="resolution">
+    <h3>RESOLUTION</h3>
+    <p>Customer downgrading from Pro ($299) to Starter ($49). Walked through impact: 5/8 workflows would continue working on Starter, 2 would fail (HubSpot), 1 would fail (API access). Customer was fine losing the failing workflows. Downgrade scheduled for end of billing period, Pro-only workflows pre-emptively disabled to avoid surprise failures.</p>
+  </div>
+</body>
+</html>

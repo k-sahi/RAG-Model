@@ -1,0 +1,42 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install OCR tools
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends tesseract-ocr poppler-utils
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Unit and integration tests
+        run: python -m unittest discover -s tests -t . -v
+
+      - name: Retrieval eval (offline)
+        env:
+          HELIX_LLM_PROVIDER: extractive
+        run: python -m evals.run_eval --min-precision 0.6 --min-recall 0.7
+
+      - name: Answer eval (LLM judge)
+        if: ${{ env.ANTHROPIC_API_KEY != '' }}
+        run: python -m evals.run_eval --judge --min-precision 0.6 --min-faithfulness 0.7
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-results
+          path: evals/results/

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HX-1378 — Run data missing from export — older than 90 days?</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         max-width: 820px; margin: 24px auto; padding: 0 24px; color: #2a2422; line-height: 1.5; }
+  .ticket-header { border-bottom: 2px solid #3D332E; padding-bottom: 16px; margin-bottom: 24px; }
+  .ticket-id { color: #C97B3F; font-weight: 700; font-size: 14px; letter-spacing: 0.05em; }
+  h1 { font-size: 22px; margin: 6px 0 12px; color: #3D332E; }
+  .meta-row { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: #555; }
+  .meta-row span strong { color: #3D332E; }
+  .priority-badge { display: inline-block; padding: 2px 8px; border-radius: 3px; color: white;
+                     font-weight: 600; font-size: 12px; background: #777777; }
+  .conversation { margin-top: 24px; }
+  .message { padding: 14px 18px; margin-bottom: 14px; border-radius: 4px; }
+  .message-header { display: flex; gap: 12px; align-items: center; margin-bottom: 8px;
+                     flex-wrap: wrap; font-size: 13px; }
+  .sender-name { font-weight: 700; color: #3D332E; }
+  .role-badge { background: #3D332E; color: #fff; padding: 2px 8px; font-size: 11px;
+                 border-radius: 3px; letter-spacing: 0.04em; }
+  .timestamp { color: #888; font-size: 12px; margin-left: auto; }
+  .message-body { font-size: 14px; }
+  .message-body code { background: #f0e8df; padding: 1px 5px; border-radius: 2px; font-size: 13px; }
+  .resolution { margin-top: 32px; padding: 18px; background: #3D332E; color: #fff; border-radius: 4px; }
+  .resolution h3 { margin: 0 0 8px; color: #C97B3F; font-size: 14px; letter-spacing: 0.06em; }
+  .resolution p { margin: 0; font-size: 14px; line-height: 1.6; }
+  ul, ol { margin: 8px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+</style>
+</head>
+<body>
+  <div class="ticket-header">
+    <div class="ticket-id">TICKET HX-1378</div>
+    <h1>Run data missing from export — older than 90 days?</h1>
+    <div class="meta-row">
+      <span><strong>Status:</strong> Resolved</span>
+      <span><strong>Category:</strong> Data</span>
+      <span><strong>Priority:</strong> <span class="priority-badge">P3</span></span>
+      <span><strong>Customer:</strong> Eleanor Voss (Tidewater Insurance)</span>
+      <span><strong>Agent:</strong> Marcus Webb</span>
+    </div>
+  </div>
+  <div class="conversation">
+    
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Eleanor Voss</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-04-11 15:33 UTC</span>
+          </div>
+          <div class="message-body"><p>I exported all our runs and a chunk of older records seem to be missing. Specifically anything from 2023 isn't in the export. We need this for an audit.</p></div>
+        </div>
+        <div class="message" style="background: #f6f2ed; border-left: 3px solid #3D332E;">
+          <div class="message-header">
+            <span class="sender-name">Marcus Webb</span>
+            <span class="role-badge">Helix Support</span>
+            <span class="timestamp">2024-04-11 15:51 UTC</span>
+          </div>
+          <div class="message-body"><p>Hi Eleanor — that's expected behavior, unfortunately. On the Pro plan, run logs are retained for 90 days. Anything older has been hard-deleted from the platform and isn't recoverable. Today is April 11, 2024, so anything before about January 11 is gone.</p><p>For audit purposes going forward, I'd suggest one of: (1) upgrade to Enterprise which gives you 365 days of retention, or (2) run a scheduled export job to push your run data into your own storage on a regular cadence.</p></div>
+        </div>
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Eleanor Voss</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-04-11 16:02 UTC</span>
+          </div>
+          <div class="message-body"><p>Wait, hard-deleted? There's truly nothing recoverable, even from backups?</p></div>
+        </div>
+        <div class="message" style="background: #f6f2ed; border-left: 3px solid #3D332E;">
+          <div class="message-header">
+            <span class="sender-name">Marcus Webb</span>
+            <span class="role-badge">Helix Support</span>
+            <span class="timestamp">2024-04-11 16:18 UTC</span>
+          </div>
+          <div class="message-body"><p>Correct. Backups inherit the same retention policy as production data — once data ages out in production, the next backup cycle removes it from backups too. Within 35 days of production deletion, it's gone from everywhere. We can't recover it.</p><p>This is a deliberate design choice for compliance reasons (GDPR, etc.) — we don't want to be in a position of holding data longer than our policy says we will. I know it's frustrating in your case but it's a guarantee customers expect.</p></div>
+        </div>
+        <div class="message" style="background: #fff7f0; border-left: 3px solid #C97B3F;">
+          <div class="message-header">
+            <span class="sender-name">Eleanor Voss</span>
+            <span class="role-badge">Customer</span>
+            <span class="timestamp">2024-04-11 16:25 UTC</span>
+          </div>
+          <div class="message-body"><p>Understood. Disappointing but I get the reasoning. Let me talk to my team about Enterprise — we may need it just for the longer retention. Can you connect me with someone?</p></div>
+        </div>
+        <div class="message" style="background: #f6f2ed; border-left: 3px solid #3D332E;">
+          <div class="message-header">
+            <span class="sender-name">Marcus Webb</span>
+            <span class="role-badge">Helix Support</span>
+            <span class="timestamp">2024-04-11 16:30 UTC</span>
+          </div>
+          <div class="message-body"><p>Looping in your account exec — they'll reach out today. Marking this ticket resolved on the data question; the upgrade conversation can continue separately.</p></div>
+        </div>
+  </div>
+  <div class="resolution">
+    <h3>RESOLUTION</h3>
+    <p>Customer expected to find pre-90-day-old run records in export. On Pro plan, run logs are retained 90 days then hard-deleted including from backups within 35 days. Data is unrecoverable. Customer routed to AE to discuss Enterprise upgrade for 365-day retention.</p>
+  </div>
+</body>
+</html>
