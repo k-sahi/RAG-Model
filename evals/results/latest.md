@@ -1,4 +1,4 @@
-# Eval run 2026-10-22T14:41:50Z
+# Eval run 2026-10-22T14:57:17Z
 
 Config: `embedder=local-lsa`, `reranker=local`, `query_rewrite=False`, `generator=extractive`, `chunk_size=900`, `chunk_overlap=150`, `top_k=8`, `max_docs=3`, `per_doc=3`, `relative_cutoff=0.75`, `chunk_cutoff=0.7`, `abstain_threshold=0.36`, `chunks_indexed=305`
 
@@ -12,15 +12,29 @@ Config: `embedder=local-lsa`, `reranker=local`, `query_rewrite=False`, `generato
 | doc_recall@5 | 0.897 |
 | key_fact_recall | 0.534 |
 | chunks_returned | 4.42 |
-| retrieve_ms | 5.282 |
+| retrieve_ms | 7.16 |
 
 ## By difficulty
 
 | difficulty | n | context_precision | context_recall | mrr | hit@1 | hit@3 | doc_recall@5 | key_fact_recall | chunks_returned | retrieve_ms |
 |---|---|---|---|---|---|---|---|---|---|---|
-| easy | 20 | 0.669 | 0.925 | 0.848 | 0.75 | 0.95 | 0.95 | 0.812 | 4.6 | 4.62 |
-| hard | 10 | 0.787 | 0.525 | 0.856 | 0.8 | 0.9 | 0.7 | 0.291 | 3.9 | 8.51 |
-| medium | 20 | 0.732 | 0.783 | 0.925 | 0.85 | 1.0 | 0.942 | 0.371 | 4.5 | 4.33 |
+| easy | 20 | 0.669 | 0.925 | 0.848 | 0.75 | 0.95 | 0.95 | 0.812 | 4.6 | 6.105 |
+| hard | 10 | 0.787 | 0.525 | 0.856 | 0.8 | 0.9 | 0.7 | 0.291 | 3.9 | 9.36 |
+| medium | 20 | 0.732 | 0.783 | 0.925 | 0.85 | 1.0 | 0.942 | 0.371 | 4.5 | 7.115 |
+
+## By category
+
+| category | n | context_precision | context_recall | hit@3 |
+|---|---|---|---|---|
+| admin | 7 | 0.779 | 0.857 | 1.0 |
+| api | 14 | 0.784 | 0.786 | 1.0 |
+| billing | 8 | 0.684 | 0.844 | 1.0 |
+| csm | 1 | 0.667 | 0.667 | 1.0 |
+| data | 5 | 0.613 | 0.8 | 0.8 |
+| incident-response | 3 | 1.0 | 0.667 | 1.0 |
+| integrations | 3 | 0.75 | 0.778 | 1.0 |
+| mobile | 2 | 0.562 | 1.0 | 1.0 |
+| workflows | 7 | 0.555 | 0.667 | 0.857 |
 
 Abstention: 11/15 out-of-scope questions refused, 0 in-scope questions wrongly refused.
 
