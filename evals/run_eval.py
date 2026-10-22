@@ -173,6 +173,15 @@ def to_markdown(result: dict) -> str:
     ]
     for k, v in result["by_difficulty"].items():
         lines.append(f"| {k} | {v['n']} | " + " | ".join(str(v.get(m, "")) for m in cols) + " |")
+    lines += [
+        "",
+        "## By category",
+        "",
+        "| category | n | context_precision | context_recall | hit@3 |",
+        "|---|---|---|---|---|",
+    ]
+    for k, v in result["by_category"].items():
+        lines.append(f"| {k} | {v['n']} | {v.get('context_precision', '')} | {v.get('context_recall', '')} | {v.get('hit@3', '')} |")
     a = result["abstention"]
     lines += [
         "",
