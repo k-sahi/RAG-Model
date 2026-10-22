@@ -7,6 +7,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
     env:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
     steps:
@@ -14,7 +18,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python-version }}
           cache: pip
 
       - name: Install OCR tools
@@ -32,11 +36,11 @@ jobs:
         run: python -m evals.run_eval --min-precision 0.6 --min-recall 0.7
 
       - name: Answer eval (LLM judge)
-        if: ${{ env.ANTHROPIC_API_KEY != '' }}
+        if: ${{ env.ANTHROPIC_API_KEY != '' && matrix.python-version == '3.12' }}
         run: python -m evals.run_eval --judge --min-precision 0.6 --min-faithfulness 0.7
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: eval-results
+          name: eval-results-py${{ matrix.python-version }}
           path: evals/results/
